@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>88별자리 라이어 게임</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #1e1e2f, #3a3a5d);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2em;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      max-width: 400px;
+      width: 90%;
+      transition: all 0.3s ease-in-out;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 1.8em;
+      color: #ffdc91;
+    }
+
+    h2 {
+      color: #ffd369;
+    }
+
+    label, input, p {
+      font-size: 1.1em;
+      margin-top: 0.5em;
+    }
+
+    input[type="number"] {
+      padding: 0.3em;
+      width: 80px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      margin-top: 1em;
+      padding: 0.6em 1.4em;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      background-color: #ffd369;
+      color: #222;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #ffc247;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .highlight-word {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #ffd369;
+      margin-top: 1em;
+      padding: 0.5em;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="setup">
+    <h1>🌌 88별자리 라이어 게임</h1>
+    <label>참가자 수: <input type="number" id="playerCount" min="3" max="20"></label><br><br>
+    <label><input type="radio" name="mode" value="normal" checked> 일반 모드</label><br>
+    <label><input type="radio" name="mode" value="fool"> 바보 모드 🤪</label><br>
+    <button onclick="startGame()">게임 시작</button>
+  </div>
+
+  <div class="card hidden" id="reveal">
+    <h2 id="playerTurn"></h2>
+    <p id="wordInfo">제시어를 확인하려면 아래 버튼을 누르세요.</p>
+    <button onclick="nextPlayer()">다음</button>
+  </div>
+
+  <div class="card hidden" id="end">
+    <h2>✅ 전달 완료!</h2>
+    <p>모두가 확인했습니다. 토론을 시작하세요!</p>
+  </div>
+
+  <script>
+    const constellations = [
+      "큰곰자리 (UMa)", "작은곰자리 (UMi)", "사자자리 (Leo)", "처녀자리 (Vir)", "황소자리 (Tau)",
+      "쌍둥이자리 (Gem)", "게자리 (Cnc)", "물고기자리 (Psc)", "양자리 (Ari)", "전갈자리 (Sco)",
+      "궁수자리 (Sgr)", "염소자리 (Cap)", "물병자리 (Aqr)", "독수리자리 (Aql)", "백조자리 (Cyg)",
+      "페가수스자리 (Peg)", "페르세우스자리 (Per)", "카시오페이아자리 (Cas)", "안드로메다자리 (And)",
+      "세페우스자리 (Cep)", "큰개자리 (CMa)", "작은개자리 (CMi)", "오리온자리 (Ori)", "용자리 (Dra)",
+      "헤르쿨레스자리 (Her)", "방패자리 (Sct)", "뱀자리 (Ser)", "뱀주인자리 (Oph)", "화살자리 (Sge)",
+      "삼각형자리 (Tri)", "마차부자리 (Aur)", "직각자자리 (Nor)", "팔분의자리 (Oct)", "인디언자리 (Ind)",
+      "공기펌프자리 (Ant)", "에리다누스자리 (Eri)", "화로자리 (For)", "고래자리 (Cet)", "도마뱀자리 (Lac)",
+      "사분의자리 (Sex)", "망원경자리 (Tel)", "마이크로스코프자리 (Mic)", "제단자리 (Ara)",
+      "돛자리 (Vel)", "용골자리 (Car)", "고물자리 (Pup)", "목자자리 (Boo)",
+      "비둘기자리 (Col)", "까마귀자리 (Crv)", "컵자리 (Crt)", "왕관자리 (CrB)", "남쪽왕관자리 (CrA)",
+      "토끼자리 (Lep)", "물뱀자리 (Hya)", "작은사자자리 (LMi)", "그물자리 (Ret)", "공작자리 (Pav)",
+      "거문고자리 (Lyr)", "십자자리 (Cru)", "부채자리 (Mus)", "남쪽물고기자리 (PsA)",
+      "황새치자리 (Dra)", "삼각형남쪽자리 (TrA)", "금붕어자리 (Dor)", "검은고리자리 (Cir)", 
+      "카멜레온자리 (Cha)", "나침반자리 (Pyx)", "망치자리 (Hor)", "시계자리 (Hor)", 
+      "기린자리 (Cam)", "별무리자리 (Com)"
+    ];
+
+    let players = [];
+    let liarIndex = 0;
+    let secretWord = '';
+    let fakeWord = '';
+    let currentIndex = 0;
+    let mode = 'normal';
+    let showed = false;
+
+    function startGame() {
+      const count = parseInt(document.getElementById("playerCount").value);
+      if (isNaN(count) || count < 3) {
+        alert("참가자는 최소 3명이어야 합니다.");
+        return;
+      }
+
+      // 모드 설정
+      const selectedMode = document.querySelector('input[name="mode"]:checked');
+      mode = selectedMode ? selectedMode.value : 'normal';
+
+      // 제시어와 라이어 설정
+      secretWord = constellations[Math.floor(Math.random() * constellations.length)];
+      liarIndex = Math.floor(Math.random() * count);
+
+      if (mode === 'fool') {
+        do {
+          fakeWord = constellations[Math.floor(Math.random() * constellations.length)];
+        } while (fakeWord === secretWord);
+      }
+
+      players = Array(count).fill(null);
+      currentIndex = 0;
+
+      document.getElementById("setup").classList.add("hidden");
+      document.getElementById("reveal").classList.remove("hidden");
+      showPlayer();
+    }
+
+    function showPlayer() {
+      document.getElementById("playerTurn").innerText = `👤 ${currentIndex + 1}번째 참가자`;
+      document.getElementById("wordInfo").innerText = "제시어를 확인하려면 아래 버튼을 누르세요.";
+      showed = false;
+    }
+
+    function nextPlayer() {
+      const info = document.getElementById("wordInfo");
+
+      if (!showed) {
+        if (currentIndex === liarIndex) {
+          if (mode === 'normal') {
+            info.innerHTML = "<span class='highlight-word'>🕵️‍♂️ 당신은 <strong>라이어</strong>입니다. 제시어를 알 수 없습니다!</span>";
+          } else {
+            info.innerHTML = `<span class="highlight-word">🤪 당신의 제시어는 "<strong>${fakeWord}</strong>" 입니다!</span>`;
+          }
+        } else {
+          info.innerHTML = `<span class="highlight-word">🌟 제시어는 "<strong>${secretWord}</strong>" 입니다!</span>`;
+        }
+        showed = true;
+      } else {
+        currentIndex++;
+        if (currentIndex >= players.length) {
+          document.getElementById("reveal").classList.add("hidden");
+          document.getElementById("end").classList.remove("hidden");
+        } else {
+          showPlayer();
+        }
+      }
+    }
+  </script>
+</body>
+</html>
