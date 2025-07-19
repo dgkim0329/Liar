@@ -71,7 +71,7 @@
     }
 
     .highlight-word {
-      font-size: 1.8em;
+      font-size: 1.5em;
       font-weight: bold;
       color: #ffd369;
       margin-top: 1em;
@@ -102,23 +102,25 @@
 
   <script>
     const constellations = [
-      "큰곰자리 (UMa)", "작은곰자리 (UMi)", "사자자리 (Leo)", "처녀자리 (Vir)", "황소자리 (Tau)",
-      "쌍둥이자리 (Gem)", "게자리 (Cnc)", "물고기자리 (Psc)", "양자리 (Ari)", "전갈자리 (Sco)",
-      "궁수자리 (Sgr)", "염소자리 (Cap)", "물병자리 (Aqr)", "독수리자리 (Aql)", "백조자리 (Cyg)",
-      "페가수스자리 (Peg)", "페르세우스자리 (Per)", "카시오페이아자리 (Cas)", "안드로메다자리 (And)",
-      "세페우스자리 (Cep)", "큰개자리 (CMa)", "작은개자리 (CMi)", "오리온자리 (Ori)", "용자리 (Dra)",
-      "헤르쿨레스자리 (Her)", "방패자리 (Sct)", "뱀자리 (Ser)", "뱀주인자리 (Oph)", "화살자리 (Sge)",
-      "삼각형자리 (Tri)", "마차부자리 (Aur)", "직각자자리 (Nor)", "팔분의자리 (Oct)", "인디언자리 (Ind)",
-      "공기펌프자리 (Ant)", "에리다누스자리 (Eri)", "화로자리 (For)", "고래자리 (Cet)", "도마뱀자리 (Lac)",
-      "사분의자리 (Sex)", "망원경자리 (Tel)", "마이크로스코프자리 (Mic)", "제단자리 (Ara)",
-      "돛자리 (Vel)", "용골자리 (Car)", "고물자리 (Pup)", "목자자리 (Boo)",
-      "비둘기자리 (Col)", "까마귀자리 (Crv)", "컵자리 (Crt)", "왕관자리 (CrB)", "남쪽왕관자리 (CrA)",
-      "토끼자리 (Lep)", "물뱀자리 (Hya)", "작은사자자리 (LMi)", "그물자리 (Ret)", "공작자리 (Pav)",
-      "거문고자리 (Lyr)", "십자자리 (Cru)", "부채자리 (Mus)", "남쪽물고기자리 (PsA)",
-      "황새치자리 (Dra)", "삼각형남쪽자리 (TrA)", "금붕어자리 (Dor)", "검은고리자리 (Cir)", 
-      "카멜레온자리 (Cha)", "나침반자리 (Pyx)", "망치자리 (Hor)", "시계자리 (Hor)", 
-      "기린자리 (Cam)", "별무리자리 (Com)"
-    ];
+  "가슴자리 (Ant)", "물고기자리 (Psc)", "양자리 (Ari)", "남쪽화관자리 (Ara)", "독수리자리 (Aql)",
+  "천칭자리 (Lib)", "제단자리 (Cae)", "기린자리 (Cam)", "염소자리 (Cap)", "바다뱀자리 (Hya)",
+  "황소자리 (Tau)", "도마뱀자리 (Lac)", "사자자리 (Leo)", "남쪽왕관자리 (CrA)", "까마귀자리 (Crv)",
+  "컵자리 (Crt)", "왕관자리 (CrB)", "백조자리 (Cyg)", "돌고래자리 (Del)", "나침반자리 (Pyx)",
+  "금붕어자리 (Dor)", "용자리 (Dra)", "말자리 (Equ)", "에리다누스자리 (Eri)", "화로자리 (For)",
+  "쌍둥이자리 (Gem)", "학자리 (Gru)", "뱀자리 (Ser)", "헤르쿨레스자리 (Her)", "시계자리 (Hor)",
+  "인디언자리 (Ind)", "현미경자리 (Mic)", "별무리자리 (Com)", "스핑크스자리 (Lyn)", "사냥개자리 (CVn)",
+  "사분의자리 (Sex)", "망치자리 (Hor)", "큰개자리 (CMa)", "작은개자리 (CMi)", "페르세우스자리 (Per)",
+  "안드로메다자리 (And)", "거문고자리 (Lyr)", "궁수자리 (Sgr)", "육분의자리 (Sxt)", "방패자리 (Sct)",
+  "직각자자리 (Nor)", "돛자리 (Vel)", "고물자리 (Pup)", "용골자리 (Car)", "페가수스자리 (Peg)",
+  "화살자리 (Sge)", "물병자리 (Aqr)", "조랑말자리 (Equ)", "삼각형자리 (Tri)", "망원경자리 (Tel)",
+  "팔분의자리 (Oct)", "남십자자리 (Cru)", "오리온자리 (Ori)", "바닷물고기자리 (PsA)", "목자자리 (Boo)",
+  "마차부자리 (Aur)", "뱀주인자리 (Oph)", "카멜레온자리 (Cha)", "카시오페이아자리 (Cas)", "세페우스자리 (Cep)",
+  "공작자리 (Pav)", "피닉스자리 (Phe)", "고래자리 (Cet)", "고니자리 (Cyg)", "작은사자자리 (LMi)",
+  "삼각형남쪽자리 (TrA)", "문장자리 (Mon)", "작은망원경자리 (Mic)", "촛불자리 (Men)", "남쪽물고기자리 (PsA)",
+  "비둘기자리 (Col)", "큰곰자리 (UMa)", "작은곰자리 (UMi)", "파리자리 (Mus)", "제비자리 (Aps)",
+  "토끼자리 (Lep)", "부채자리 (Vel)", "비둘기자리 (Col)", "팔분의자리 (Oct)", "큰부리새자리 (Tuc)",
+  "비둘기자리 (Col)", "망원경자리 (Tel)", "시계자리 (Hor)"
+];
 
     let players = [];
     let liarIndex = 0;
@@ -171,7 +173,7 @@
           if (mode === 'normal') {
             info.innerHTML = "<span class='highlight-word'>🕵️‍♂️ 당신은 <strong>라이어</strong>입니다. 제시어를 알 수 없습니다!</span>";
           } else {
-            info.innerHTML = `<span class="highlight-word">🤪 당신의 제시어는 "<strong>${fakeWord}</strong>" 입니다!</span>`;
+            info.innerHTML = `<span class="highlight-word">🌟 제시어는 "<strong>${fakeWord}</strong>" 입니다!</span>`;
           }
         } else {
           info.innerHTML = `<span class="highlight-word">🌟 제시어는 "<strong>${secretWord}</strong>" 입니다!</span>`;
